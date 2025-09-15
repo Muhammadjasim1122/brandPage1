@@ -1,0 +1,56 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 157px 30px 157px;
+}
+
+.hero-text {
+  max-width: 50%;
+}
+
+.hero-text h1 {
+  font-size: 70px;
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  line-height: 70px;
+
+}
+
+.hero-text p {
+  
+  color: #5A5959;
+  font-size: 12px;
+  max-width: 310px;
+
+}
+
+.buttons {
+  margin: 20px 0;
+}
+
+.shop-btn {
+  background: #D01C28;
+  color: white;
+  border: none;
+  padding: 8px 25px;
+  margin-right: 10px;
+  cursor: pointer;
+  /* border-radius: 4px; */
+}
+
+.category-btn {
+  border: 1px solid gray;
+  padding: 8px 25px;
+  background: white;
+  cursor: pointer;
+  /* border-radius: 4px; */
+}
+
+.stores img {
+  width: 20px;
+  margin-right: 10px;
+}
+.hero-image img {
+  width: 450px;
+}
