@@ -1,50 +1,25 @@
 # Frappe HR Backend API
 
-Backend API server for Frappe HR application with clean, maintainable folder structure.
+Backend API server for Frappe HR application.
 
 ## Project Structure
 
 ```
 backend/
 ├── config/
-│   ├── db.js              # MongoDB connection configuration
-│   └── auth.js            # JWT secrets and configuration
+│   ├── database.js      # MongoDB connection configuration
+│   └── auth.js          # JWT secrets and configuration
 ├── middleware/
-│   ├── authMiddleware.js  # JWT authentication middleware
-│   └── errorMiddleware.js # Error handling middleware
+│   └── auth.js          # Authentication middleware
 ├── models/
-│   └── User.js            # User schema/model
-├── controllers/
-│   └── userController.js  # Business logic for user operations
+│   └── User.js          # User schema/model
 ├── routes/
-│   └── userRoutes.js      # API route definitions
-├── utils/
-│   └── generateToken.js   # JWT token generation utility
-├── server.js              # Main server file (entry point)
-├── .env                   # Environment variables
+│   └── authRoutes.js    # Authentication routes (signup, login)
+├── server.js            # Main server file
+├── package.json
 ├── .gitignore
-└── package.json
+└── .env.example
 ```
-
-## Folder Structure Explanation
-
-| Folder         | Purpose                                 | Example File        |
-| -------------- | --------------------------------------- | ------------------- |
-| `config/`      | DB connection and app configuration     | `db.js`             |
-| `models/`      | MongoDB schemas and models              | `User.js`           |
-| `controllers/` | Business logic / request handling       | `userController.js` |
-| `routes/`      | Defines API endpoints                   | `userRoutes.js`     |
-| `middleware/`  | Request pre-processing / authentication | `authMiddleware.js` |
-| `utils/`       | Helper functions like token generation  | `generateToken.js`  |
-| `server.js`    | App entry point / server setup          | —                   |
-
-## Benefits of This Structure
-
-✅ **Separation of Concerns**: Each folder has a specific responsibility  
-✅ **Easy to Navigate**: Find files quickly by their purpose  
-✅ **Scalable**: Easy to add new features without cluttering  
-✅ **Maintainable**: Changes in one area don't affect others  
-✅ **Professional**: Follows industry best practices  
 
 ## Setup Instructions
 
@@ -54,7 +29,7 @@ backend/
    ```
 
 2. **Configure Environment Variables**
-   - Copy `.env.example` to `.env` (if exists)
+   - Copy `.env.example` to `.env`
    - Update the values in `.env` file (especially JWT_SECRET for production)
 
 3. **Start MongoDB**
@@ -77,33 +52,84 @@ backend/
 #### POST `/api/auth/signup`
 Register a new user with email and password.
 
+**Request Body:**
+```json
+{
+  "email": "johndoe@mail.com",
+  "password": "password123",
+  "fullName": "John Doe",
+  "firstName": "John",
+  "lastName": "Doe",
+  "username": "johndoe"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "User registered successfully",
+  "token": "jwt_token_here",
+  "user": {
+    "id": "user_id",
+    "email": "johndoe@mail.com",
+    "fullName": "John Doe",
+    ...
+  }
+}
+```
+
 #### POST `/api/auth/google-signup`
 Register or sign in with Google.
 
+**Request Body:**
+```json
+{
+  "email": "johndoe@gmail.com",
+  "googleId": "google_user_id",
+  "fullName": "John Doe",
+  "firstName": "John",
+  "lastName": "Doe",
+  "profileImage": "https://..."
+}
+```
+
 #### POST `/api/auth/login`
 Login with email and password.
+
+**Request Body:**
+```json
+{
+  "email": "johndoe@mail.com",
+  "password": "password123"
+}
+```
 
 ### Health Check
 
 #### GET `/api/health`
 Check if the server is running.
 
-## How Files Work Together
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Server is running",
+  "timestamp": "2024-01-01T00:00:00.000Z"
+}
+```
 
-1. **Request Flow**:
-   - `server.js` → receives request
-   - `routes/userRoutes.js` → defines endpoint
-   - `middleware/authMiddleware.js` → authenticates (if protected)
-   - `controllers/userController.js` → handles business logic
-   - `models/User.js` → interacts with database
-   - `utils/generateToken.js` → generates JWT token
+## Database
 
-2. **Error Handling**:
-   - `middleware/errorMiddleware.js` → catches and formats errors
+- **MongoDB Connection:** `mongodb://localhost:27017/frappe-hr`
+- **Collections:** `users`
 
-3. **Configuration**:
-   - `config/db.js` → database connection
-   - `config/auth.js` → JWT configuration
+## Authentication
+
+JWT tokens are used for authentication. Include the token in the Authorization header:
+```
+Authorization: Bearer <token>
+```
 
 ## Development
 
